@@ -1,0 +1,67 @@
+version: "3.8"
+
+services:
+  postgres:
+    image: postgres:16
+    container_name: exp-postgres
+    environment:
+      POSTGRES_USER: exp
+      POSTGRES_PASSWORD: exp
+      POSTGRES_DB: experiment_platform
+    ports:
+      - "5433:5432"
+    volumes:
+      - ./sql/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U exp"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    container_name: exp-redis
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  api:
+    build:
+      context: .
+      dockerfile: api/Dockerfile
+    container_name: exp-api
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      PG_HOST: postgres
+      PG_PORT: "5432"
+      PG_DB: experiment_platform
+      PG_USER: exp
+      PG_PASSWORD: exp
+      REDIS_HOST: redis
+      REDIS_PORT: "6379"
+    ports:
+      - "8001:8000"
+    restart: unless-stopped
+
+  dashboard:
+    build: ./dashboard
+    container_name: exp-dashboard
+    depends_on:
+      - api
+    environment:
+      API_BASE_URL: http://api:8000
+    ports:
+      - "8502:8501"
+    restart: unless-stopped
+
+volumes:
+  pg_data:
