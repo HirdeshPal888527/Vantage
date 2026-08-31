@@ -1,4 +1,6 @@
-# Feature Store & Experimentation Platform
+# Vantage
+
+**Feature Store & Experimentation Platform**
 
 A backend system for running statistically rigorous A/B tests, backed by a
 dual-write online/offline feature store. It answers the questions a real
@@ -9,7 +11,7 @@ metric can we remove using data we already had before the test started.
 
 ## Overview
 
-Predictive ML answers "what will happen." This project answers "did our
+Predictive ML answers "what will happen." Vantage answers "did our
 change actually work, and how confident should we be." The statistical
 core is not a trained model — it's four independent, testable pieces of
 inference: power analysis, always-valid sequential testing, CUPED
@@ -97,8 +99,8 @@ anytime-valid inference, not a bug.
 **Requirements:** Docker and Docker Compose.
 
 ```bash
-git clone <this-repo>
-cd experiment-platform
+git clone https://github.com/HirdeshPal888527/Vantage.git
+cd Vantage
 docker compose up --build
 ```
 
@@ -118,7 +120,7 @@ docker compose down -v
 ## Project structure
 
 ```
-.
+Vantage/
 ├── docker-compose.yml
 ├── sql/
 │   └── init.sql             # feature store + experiment schema
