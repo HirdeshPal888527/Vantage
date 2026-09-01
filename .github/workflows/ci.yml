@@ -29,7 +29,7 @@ jobs:
       - name: Install lint tools
         run: pip install ruff
       - name: Ruff check
-        run: ruff check api stats dashboard
+        run: ruff check api stats dashboard --fix
 
   build:
     runs-on: ubuntu-latest
