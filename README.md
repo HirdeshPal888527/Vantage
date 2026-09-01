@@ -180,3 +180,4 @@ Vantage/
   bootstrap CI is the more reliable signal.
 - No multi-armed bandit or adaptive traffic allocation — traffic weights
   are fixed for the lifetime of an experiment.
+  
