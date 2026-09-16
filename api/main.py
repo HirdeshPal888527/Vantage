@@ -144,8 +144,7 @@ async def create_experiment(body: ExperimentCreateIn):
 
     experiment_id = str(uuid.uuid4())
 
-    async with _pg_pool.acquire() as conn:
-        async with conn.transaction():
+    async with _pg_pool.acquire() as conn,conn.transaction() :
             await conn.execute(
                 """
                 INSERT INTO experiments
